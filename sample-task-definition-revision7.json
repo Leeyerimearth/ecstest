@@ -1,0 +1,70 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:329872142039:task-definition/sample-task-definition:7",
+    "containerDefinitions": [
+        {
+            "name": "sample-container",
+            "image": "329872142039.dkr.ecr.ap-northeast-2.amazonaws.com/ci_cd_test:bdadedc20867468ddfd331f60921481e2ee9f411",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "name": "sample-container-8080-tcp",
+                    "containerPort": 8080,
+                    "hostPort": 8080,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "entryPoint": [
+                "java",
+                "-jar",
+                "/app.jar"
+            ],
+            "environment": [],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "ulimits": []
+        }
+    ],
+    "family": "sample-task-definition",
+    "taskRoleArn": "arn:aws:iam::329872142039:role/ecsFullAccessRole",
+    "executionRoleArn": "arn:aws:iam::329872142039:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "revision": 7,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2"
+    ],
+    "requiresCompatibilities": [
+        "EC2"
+    ],
+    "cpu": "1024",
+    "memory": "512",
+    "runtimePlatform": {
+        "cpuArchitecture": "ARM64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "registeredAt": "2023-05-26T06:45:22.628Z",
+    "registeredBy": "arn:aws:iam::329872142039:root",
+    "tags": []
+}
