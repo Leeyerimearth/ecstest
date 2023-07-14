@@ -40,31 +40,29 @@ public class HomeController {
         System.out.println("이미지 세로 사이즈 : " + image.getHeight(null));
 
         String key = imgFile.getOriginalFilename();
-        imageFileUploadToS3("cloudfronttutorialyerim", key, imgFile.getContentType(), imgFile.getBytes());
+        imageFileUploadToS3("cloudfronttutorialyerim2", key, imgFile.getContentType(), imgFile.getBytes());
 
         return "upload complete !";
     }
 
     @GetMapping("/getImage")
     public String getImageUrl(@RequestParam String key) {
-        Region region = Region.AP_NORTHEAST_2;
+        Region region = Region.AP_NORTHEAST_1;
         S3Client s3 = S3Client.builder()
                 .region(region)
                 .build();
         GetUrlRequest request = GetUrlRequest.builder()
-                .bucket("cloudfronttutorialyerim")
+                .bucket("cloudfronttutorialyerim2")
                 .key(key)
                 .build();
 
-        String cfUrl = "https://d2v37tmbf353ng.cloudfront.net/" + key;
         URL url = s3.utilities().getUrl(request);
 
-        //return url.toString();
-        return cfUrl;
+        return url.toString();
     }
 
     public void imageFileUploadToS3(String bucket, String key, String contentType, byte[] fileData) {
-        Region region = Region.AP_NORTHEAST_2;
+        Region region = Region.AP_NORTHEAST_1;
         S3Client s3 = S3Client.builder()
                 .region(region)
                 .build();
