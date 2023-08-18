@@ -32,4 +32,4 @@ jobs:
 
     - name: S3 Sync Cli
       run: |
-        aws s3 sync ./src/main/resources/static s3://kiss-yerim-test/static
+        aws s3 sync ./src/main/resources/static s3://kiss-yerim-test/static --size-only
