@@ -30,12 +30,6 @@ jobs:
         role-to-assume: arn:aws:iam::329872142039:role/github-action-role
         role-session-name: testRoleSession
 
-    - name: S3 Sync
-      uses: jakejarvis/s3-sync-action@v0.5.1
-      env:
-        AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: ${{ env.AWS_REGION }}
-        SOURCE_DIR: './src/main/resources/static'
-        DEST_DIR: 'static'
+    - name: S3 Sync Cli
+      run: |
+        aws s3 sync ./src/main/resources/static s3://kiss-yerim-test/static
