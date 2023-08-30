@@ -48,35 +48,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 3  # OR "2" -> To retrieve the preceding commit.
-
-      # Example 1
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v37
-        with:
-          files: ./src/main/resources/**/*.*
-
-      # NOTE: `since_last_remote_commit: true` is implied by default and falls back to the previous local commit.
-
-      - name: List all changed files
-        run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            echo "$file was changed"
-          done
-
-      - name: Extract property value
-        id: extract-property
-        run: |
-          # Extract property value using grep and awk
-          MY_PROPERTY=$(grep 'static.resource.version' ../../src/main/resource/application.properties | awk -F= '{print $2}')
-          echo "::set-output name=my_property::$MY_PROPERTY"
-
-      - name: Set environment variable
-        run: |
-          echo "MY_PROPERTY=${{ steps.extract-property.outputs.my_property }}" >> $GITHUB_ENV
-          
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -85,10 +56,21 @@ jobs:
           role-to-assume: arn:aws:iam::329872142039:role/github-action-role
           role-session-name: testRoleSession
 
+      - name: get build time
+        id: build-time
+        run: echo "buildtime=$(date +%Y%m%d%H%M%S)" >> $GITHUB_OUTPUT
+
+      - name: Build JAR
+        run: mvn package -DBUILD_TIMESTAMP=${{ steps.build-time.outputs.buildtime }}    # Use 'mvn' command instead of './mvnw'
+
+
       - name: S3 upload
         run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            modified_filename="${file#src/main/resources/}"
-            echo "modified_filename is $modified_filename"."$MY_PROPERTY"
-            aws s3 cp ./src/main/resources/"$modified_filename" s3://kiss-yerim-test/"$modified_filename""$MY_PROPERTY"
+          for file in ./src/main/resources/**/*.js do
+            echo file
+            remove_prefix="${file#src/main/resources/}"
+            remove_suffix="${remove_prefix%.js}"
+            modified_filename="$remove_suffix.${{ steps.build-time.outputs.buildtime }}.js"
+            echo "modified_filename is $modified_filename"
+            aws s3 cp file s3://kiss-yerim-test/"$modified_filename"
           done
