@@ -64,6 +64,7 @@ jobs:
         run: |
           for file in src/main/resources/**/*.js; do
             pwd
+            ls
             echo $file
             remove_prefix="${file#src/main/resources/}"
             remove_suffix="${remove_prefix%.js}"
