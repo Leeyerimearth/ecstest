@@ -66,6 +66,18 @@ jobs:
             echo "$file was changed"
           done
 
+      - name: Extract property value
+        id: extract-property
+        run: |
+          # Extract property value using grep and awk
+          MY_PROPERTY=$(grep 'static.resource.version' ../../src/main/resource/application.properties | awk -F= '{print $2}')
+          echo "::set-output name=my_property::$MY_PROPERTY"
+
+      - name: Set environment variable
+        run: |
+          echo "MY_PROPERTY=${{ steps.extract-property.outputs.my_property }}" >> $GITHUB_ENV
+          
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -77,6 +89,6 @@ jobs:
         run: |
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             modified_filename="${file#src/main/resources/}"
-            echo "modified_filename is $modified_filename"
-            aws s3 cp ./src/main/resources/"$modified_filename" s3://kiss-yerim-test/"$modified_filename"
+            echo "modified_filename is $modified_filename"."$MY_PROPERTY"
+            aws s3 cp ./src/main/resources/"$modified_filename" s3://kiss-yerim-test/"$modified_filename""$MY_PROPERTY"
           done
