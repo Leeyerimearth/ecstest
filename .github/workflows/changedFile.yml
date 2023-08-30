@@ -62,7 +62,7 @@ jobs:
 
       - name: S3 upload
         run: |
-          for file in ./src/main/resources/**/*.js do
+          for file in ./src/main/resources/**/*.js; do
             echo $file
             remove_prefix="${file#src/main/resources/}"
             remove_suffix="${remove_prefix%.js}"
