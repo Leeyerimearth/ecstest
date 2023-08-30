@@ -62,7 +62,7 @@ jobs:
 
       - name: S3 upload
         run: |
-          for file in src/main/resources/**/*.js; do
+          for file in ./src/main/resources/static/**/*.js; do
             pwd
             ls
             echo $file
