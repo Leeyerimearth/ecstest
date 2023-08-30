@@ -60,10 +60,6 @@ jobs:
         id: build-time
         run: echo "buildtime=$(date +%Y%m%d%H%M%S)" >> $GITHUB_OUTPUT
 
-      - name: Build JAR
-        run: mvn package -DBUILD_TIMESTAMP=${{ steps.build-time.outputs.buildtime }}    # Use 'mvn' command instead of './mvnw'
-
-
       - name: S3 upload
         run: |
           for file in ./src/main/resources/**/*.js do
