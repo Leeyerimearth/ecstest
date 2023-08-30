@@ -64,7 +64,7 @@ jobs:
         run: |
           find ./src/main/resources/static/ -type f -name "*.js" | while read -r file; do
             echo "$file"
-            remove_prefix="${file#src/main/resources/}"
+            remove_prefix="${file#./src/main/resources/}"
             remove_suffix="${remove_prefix%.js}"
             modified_filename="$remove_suffix.${{ steps.build-time.outputs.buildtime }}.js"
             echo "modified_filename is $modified_filename"
