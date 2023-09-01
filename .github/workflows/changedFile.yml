@@ -62,19 +62,6 @@ jobs:
 
       - name: S3 upload
         run: |
-          find ./src/main/resources/static/ -type f -name "*.js" | while read -r file; do
-            echo "$file"
-            remove_prefix="${file#./src/main/resources/}"
-            remove_suffix="${remove_prefix%.js}"
-            modified_filename="$remove_suffix.${{ steps.build-time.outputs.buildtime }}.js"
-            echo "modified_filename is $modified_filename"
-            aws s3 cp "$file" "s3://kiss-yerim-test/$modified_filename"
-          done
-          find ./src/main/resources/static/ -type f -name "*.css" | while read -r file; do
-            echo "$file"
-            remove_prefix="${file#./src/main/resources/}"
-            remove_suffix="${remove_prefix%.css}"
-            modified_filename="$remove_suffix.${{ steps.build-time.outputs.buildtime }}.css"
-            echo "modified_filename is $modified_filename"
-            aws s3 cp "$file" "s3://kiss-yerim-test/$modified_filename"
-          done
+          aws s3 cp ./src/main/resources/static/ s3://kiss-yerim-test/static/ --recursive --exclude "*" --include "*.js" --include "*.css"
+          
+          
