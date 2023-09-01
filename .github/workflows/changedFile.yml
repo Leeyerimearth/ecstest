@@ -62,7 +62,8 @@ jobs:
 
       - name: S3 upload
         run: |
-          aws s3 cp ./src/main/resources/static/ s3://kiss-yerim-test/static/${{ steps.build-time.outputs.buildtime }}
-          / --recursive --exclude "*" --include "*.js" --include "*/social/*.png"
+          aws s3 cp ./src/main/resources/static/ s3://kiss-yerim-test/static/${{ steps.build-time.outputs.buildtime }}/ \
+          --recursive --exclude "*" --include "*.js" --include "*/social/*.png"
+          
           
           
